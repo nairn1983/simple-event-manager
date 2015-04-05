@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import sem.SimpleEventManager;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class EventSubscriberTest {
@@ -27,6 +29,23 @@ public class EventSubscriberTest {
 		verify(eventManager).notifyEventCompleted(testEvent);
 	}
 
+	@Test
+	public void testNonAnnotatdeMethodDoesNotNotify() {
+		final Event testEvent = new Event() {
+		};
+
+		eventSubscriber.doNothing(testEvent);
+		verify(eventManager, never()).notifyEventCompleted(any(Event.class));
+	}
+
+	@Test
+	public void testHandlingImplementedEventNotifiesOnCompletion() {
+		final MockEvent testEvent = new MockEvent();
+
+		eventSubscriber.handleTestEvent(testEvent);
+		verify(eventManager).notifyEventCompleted(testEvent);
+	}
+
 	private class MockEventSubscriber implements EventSubscriber {
 		private SimpleEventManager eventManager;
 
@@ -41,6 +60,14 @@ public class EventSubscriberTest {
 
 		@Subscribe
 		public void handleTestEvent(final Event event) {
+		}
+
+		public void doNothing(final Event event) {
+		}
+
+		@Subscribe
+		public void handleMockEvent(final MockEvent event) {
+			System.out.println(event.getMessage());
 		}
 	}
 }
