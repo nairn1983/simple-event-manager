@@ -8,6 +8,31 @@
     <artifactId>simple-event-manager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <name>Simple Event Manager</name>
+    <description>An automatically closing managing event manager based on the Google Guava Event Bus</description>
+    <url>https://github.com/nairn1983/simple-event-manager</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Nairn McWilliams</name>
+            <email>nairn.mcwilliams@gmail.com</email>
+            <organizationUrl>https://github.com/nairn1983</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:nairn1983/simple-event-manager.git</connection>
+        <developerConnection>scm:git:git@github.com:nairn1983/simple-event-manager.git</developerConnection>
+        <url>git@github.com:nairn1983/simple-event-manager.git</url>
+    </scm>
+
     <properties>
         <aspectjrt.version>1.8.2</aspectjrt.version>
         <guava.version>18.0</guava.version>
