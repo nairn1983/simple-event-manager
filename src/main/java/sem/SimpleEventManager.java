@@ -8,6 +8,7 @@ import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import sem.event.Event;
+import sem.event.EventSubscriber;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -33,14 +34,14 @@ public class SimpleEventManager {
 		this.eventBus = new AsyncEventBus(executorService);
 	}
 
-	public synchronized void register(final Object o) {
+	public synchronized void register(final EventSubscriber o) {
 		eventBus.register(o);
 		for(final Method method : o.getClass().getMethods()) {
 			updateEventSizeSetFromMethod(method, EventSizeAction.ADD);
 		}
 	}
 
-	public synchronized void unregister(final Object o) {
+	public synchronized void unregister(final EventSubscriber o) {
 		eventBus.unregister(o);
 		for(final Method method : o.getClass().getMethods()) {
 			updateEventSizeSetFromMethod(method, EventSizeAction.REMOVE);
