@@ -15,7 +15,7 @@ public class EventCloser {
 
 	@AfterReturning(value = "@annotation(subscribe) && target(eventSubscriber) && args(event) && execution(void *.*(*))", argNames = "joinPoint, subscribe, eventSubscriber, event")
 	public void notifyEventCompleted(final JoinPoint joinPoint, final Subscribe subscribe, final EventSubscriber eventSubscriber, final Event event) {
-		logger.debug("notifyEventCompleted("+joinPoint+") called");
+		logger.debug("Notifying completion of event {}", event);
 		eventSubscriber.getEventManager().notifyEventCompleted(event);
 	}
 }
