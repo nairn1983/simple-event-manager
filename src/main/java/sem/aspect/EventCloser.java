@@ -1,5 +1,6 @@
 package sem.aspect;
 
+import com.google.common.eventbus.Subscribe;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,9 +10,9 @@ import sem.event.EventSubscriber;
 @Aspect
 public class EventCloser {
 
-	@AfterReturning("execution(public void *.*(sem.event.Event)) && target(eventSubscriber) && args(event) " +
-			"&& @annotation(com.google.common.eventbus.Subscribe)")
-	public void notifyEventCompleted(@SuppressWarnings("unused") final JoinPoint thisJoinPoint, final EventSubscriber eventSubscriber, final Event event) {
+	@AfterReturning(value = "@annotation(subscribe) && target(eventSubscriber) && args(event) && execution(void *.*(*))", argNames = "joinPoint, subscribe, eventSubscriber, event")
+	public void notifyEventCompleted(final JoinPoint joinPoint, final Subscribe subscribe, final EventSubscriber eventSubscriber, final Event event) {
+		System.out.println("notifyEventCompleted("+joinPoint+") called");
 		eventSubscriber.getEventManager().notifyEventCompleted(event);
 	}
 }

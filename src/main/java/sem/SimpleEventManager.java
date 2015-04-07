@@ -83,6 +83,7 @@ public class SimpleEventManager {
 	}
 
 	public void notifyEventCompleted(final Event event) {
+		System.out.println("notifyEventCompleted("+event+")");
 		postedEvents.remove(event);
 		if (shutdownCalled) {
 			attemptToShutdownEventBus();

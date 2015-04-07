@@ -42,7 +42,7 @@ public class EventSubscriberTest {
 	public void testHandlingImplementedEventNotifiesOnCompletion() {
 		final MockEvent testEvent = new MockEvent();
 
-		eventSubscriber.handleTestEvent(testEvent);
+		eventSubscriber.handleMockEvent(testEvent);
 		verify(eventManager).notifyEventCompleted(testEvent);
 	}
 
@@ -67,7 +67,6 @@ public class EventSubscriberTest {
 
 		@Subscribe
 		public void handleMockEvent(final MockEvent event) {
-			System.out.println(event.getMessage());
 		}
 	}
 }

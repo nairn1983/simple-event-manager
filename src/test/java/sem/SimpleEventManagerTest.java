@@ -122,17 +122,26 @@ public class SimpleEventManagerTest {
 					}
 				});
 				handlerCompleted.set(true);
+//				eventManager.notifyEventCompleted(mockEvent);
 			}
 		};
 		eventManager.register(dummySubscriber);
 
 		final Event event = new MockEvent();
 		eventManager.post(event);
+		eventManager.shutdown();
 
 		await().atMost(1, TimeUnit.MINUTES).until(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				return handlerCompleted.get();
+			}
+		});
+
+		await().atMost(15, TimeUnit.SECONDS).until(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return getExecutorService(eventManager).isTerminated();
 			}
 		});
 	}
