@@ -7,6 +7,8 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import sem.event.Event;
 import sem.event.EventSubscriber;
 
@@ -18,6 +20,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SimpleEventManager {
+	private final XLogger logger = XLoggerFactory.getXLogger(getClass());
+
 	private final EventBus eventBus;
 	private final ExecutorService executorService;
 	private final Set<Event> postedEvents = Sets.newHashSet();
@@ -77,15 +81,19 @@ public class SimpleEventManager {
 	}
 
 	private void attemptToShutdownEventBus() {
+		final boolean postedEventsEmpty = postedEvents.isEmpty();
+		final String eventsArg = postedEventsEmpty ? "" : " not";
+		logger.debug("Posted events is{} empty;{} attempting to shut down", eventsArg, eventsArg);
 		if (postedEvents.isEmpty()) {
 			executorService.shutdown();
 		}
 	}
 
 	public void notifyEventCompleted(final Event event) {
-		System.out.println("notifyEventCompleted("+event+")");
+		logger.info("Received notification that {} has completed", event);
 		postedEvents.remove(event);
 		if (shutdownCalled) {
+			logger.debug("Shutdown called; attempting to shutdown event bus");
 			attemptToShutdownEventBus();
 		}
 	}
